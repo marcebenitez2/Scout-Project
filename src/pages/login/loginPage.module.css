@@ -1,0 +1,78 @@
+.loginContainer {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginCard {
+  background-color: #1c2130;
+  width: 30rem;
+  height: 24rem;
+  border-radius: 20px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.loginCard h3 {
+  text-align: center;
+  font-size: xx-large;
+  color: #0085ff;
+  font-weight: 600;
+}
+
+.loginCardForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+}
+
+.loginCardInput {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.loginCardInput span {
+  color: grey;
+  font-size: large;
+  font-weight: 500;
+}
+
+.loginCardInput input {
+  background-color: #1c2130;
+  border: 1px solid rgba(55, 65, 81, 1);
+  height: 2.5rem;
+  color: white;
+  outline: 0;
+  border-radius: 0.375rem;
+  padding: 0 .6rem;
+}
+
+.loginCardInput input:focus {
+  border-color: #0085ff;
+}
+
+.loginCardButton {
+  height: 2.5rem;
+  border-radius: 0.375rem;
+  border: none;
+  background-color: #0085ff;
+  color: white;
+  font-size: large;
+  cursor: pointer;
+}
+
+.loginCardButton:active{
+    background-color: #69b4ff;
+}
+
+
+@media screen and (max-width:600px){
+  .loginCard{
+    width: 70%;
+  }
+}

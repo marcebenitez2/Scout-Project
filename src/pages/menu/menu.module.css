@@ -1,0 +1,11 @@
+.menuPage{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+}
+
+@media screen and (max-width:1000px){
+    .menuPage{
+        flex-direction: column;
+    }
+}
