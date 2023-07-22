@@ -32,10 +32,10 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     // Inicio de sesión exitoso
     $user = $result->fetch_assoc();
-    $idUser = $user['idUser'];
+    $iduser = $user['iduser'];
     $username = $user['username'];
     $rol = $user['rol'];
-    echo "Success|{$idUser}|{$username}|{$rol}";
+    echo "Success|{$iduser}|{$username}|{$rol}";
 } else {
     // Inicio de sesión fallido
     echo "Invalid credentials";
