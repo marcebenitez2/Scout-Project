@@ -6,39 +6,27 @@ import { BsFillDiamondFill } from "react-icons/bs";
 import { TiDeleteOutline } from "react-icons/ti";
 
 const ScreenHome = () => {
-  const [loading, setLoading] = useState(false);
-  const [notificationsCount, setNotificationsCount] = useState(0);
+  const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState([]);
-  const [dataLoaded, setDataLoaded] = useState(false); // Variable para rastrear si los datos se han cargado
-
+  
   const { user } = useContext(UserContext);
 
   const fetchNotifications = async () => {
     try {
       const response = await axios.get("./notification.php");
       const data = response.data;
-      setNotificationsCount(data.length);
       setNotifications(data);
       setLoading(false); // Los datos se han cargado, establecemos loading en false
-      setDataLoaded(true); // Marcamos que los datos se han cargado completamente
+     
     } catch (error) {
       console.log(error);
       setLoading(false); // Hubo un error, establecemos loading en false
-      setDataLoaded(true); // Marcar que los datos se han cargado completamente, incluso si hay un error
     }
   };
 
   useEffect(() => {
     fetchNotifications();
   }, []);
-
-  useEffect(() => {
-    if (dataLoaded) {
-      // Este useEffect se ejecutará solo después de que los datos se hayan cargado completamente
-      console.log("notificationsCount:", notificationsCount);
-      console.log("notifications:", notifications);
-    }
-  }, [notificationsCount, notifications, dataLoaded]); // Agregamos dataLoaded como dependencia para ejecutar el useEffect solo cuando los datos estén cargados
 
   const deleteNotification = (id) =>{
     const updateNotificactions = notifications.filter((x)=> x.id !== id)
