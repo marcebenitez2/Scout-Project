@@ -12,8 +12,19 @@ const ScreenBeneficiaries = () => {
   const fetchBeneficiaries = async () => {
     try {
       const response = await axios.get("./beneficiaries.php");
-      console.log(response.data);
-      setBeneficiaries(response.data);
+      const data = response.data
+      console.log(data)
+      data.forEach(element => {
+        if(element.personal_file === 1){
+          element.personal_file = true
+        } else element.personal_file = false
+
+        if(element.medical_file === 1){
+          element.medical_file = true
+        } else element.medical_file = false
+      });
+      console.log(data)
+      setBeneficiaries(data);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -74,6 +85,7 @@ const ScreenBeneficiaries = () => {
   useEffect(() => {
     // Una vez que los beneficiarios se han cargado, establecer la vista en todos los datos.
     setView(beneficiaries);
+  
   }, [beneficiaries]);
 
   if (loading) {

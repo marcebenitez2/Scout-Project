@@ -16,7 +16,6 @@ const MenuPage = () => {
 
   const array = [ScreenHome,ScreenBeneficiaries,ScreenInventory,ScreenCalendary,ScreenPlanning,ScreenMeeting];
 
-  console.log(array)
 
   return (
     <ScreenContext.Provider value={{ screenContent, setScreenContent }}>
