@@ -13,7 +13,7 @@ const ScreenHome = () => {
 
   const fetchNotifications = async () => {
     try {
-      const response = await axios.get("./notification.php");
+      const response = await axios.get("http://localhost/notification.php");
       const data = response.data;
       setNotifications(data);
       setLoading(false); // Los datos se han cargado, establecemos loading en false

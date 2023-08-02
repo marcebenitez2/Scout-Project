@@ -18,7 +18,7 @@ const FormHome = () => {
       params.append("mail", mail);
       params.append("message", message);
 
-      const response = await axios.post("./sendMessage.php", params, {
+      const response = await axios.post("http://localhost/sendMessage.php", params, {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },

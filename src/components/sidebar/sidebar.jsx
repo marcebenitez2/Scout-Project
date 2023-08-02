@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import style from "./sidebar.module.css";
-import image from "../../assets/flordeliz.png";
+import image from "../../assets/2.png";
 import { BsPeopleFill } from "react-icons/bs";
 import { MdInventory } from "react-icons/md";
 import { BsFillCalendarDateFill } from "react-icons/bs";

@@ -1,7 +1,21 @@
 <?php
 // Configuración de la conexión a la base de datos
+header("Access-Control-Allow-Origin: *");
+
+// Permitir los métodos que se utilizan en la solicitud (por ejemplo, POST)
+header("Access-Control-Allow-Methods: POST");
+
+// Permitir los encabezados específicos que se utilizan en la solicitud
+header("Access-Control-Allow-Headers: Content-Type");
+
+// Si la solicitud es del tipo OPTIONS, finaliza aquí para la respuesta de preflight
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    exit;
+}
+
 $servername = "localhost";
 $username = "root";
+$port = 3306;
 $password = "";
 $dbname = "scout";
 
@@ -11,7 +25,7 @@ $usernameInput = $data['username'];
 $passwordInput = $data['password'];
 
 // Crear una conexión a la base de datos
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($servername, $username, $password, $dbname,$port);
 
 // Verificar si hay errores en la conexión
 if ($conn->connect_error) {

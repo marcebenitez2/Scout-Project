@@ -1,11 +1,25 @@
 <?php
 
+header("Access-Control-Allow-Origin: *");
+
+// Permitir los métodos que se utilizan en la solicitud (por ejemplo, POST)
+header("Access-Control-Allow-Methods: POST");
+
+// Permitir los encabezados específicos que se utilizan en la solicitud
+header("Access-Control-Allow-Headers: Content-Type");
+
+// Si la solicitud es del tipo OPTIONS, finaliza aquí para la respuesta de preflight
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    exit;
+}
+
 $servername = "localhost";
+$port = 3306;
 $username = "root";
 $password = "";
 $bdname = "scout";
 
-$conn = new mysqli($servername, $username, $password, $bdname);
+$conn = new mysqli($servername, $username, $password, $bdname,$port);
 
 if ($conn->connect_error) {
     die("error de conexión: " . $conn->connect_error);

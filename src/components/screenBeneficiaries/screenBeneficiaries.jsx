@@ -3,6 +3,8 @@ import style from "./screenBeneficiaries.module.css";
 import axios from "axios";
 import { ImCheckboxChecked } from "react-icons/im";
 import { ImCheckboxUnchecked } from "react-icons/im";
+import { FiEdit3 } from "react-icons/fi";
+import ModalBeneficiaries from "./Modal/modalBeneficiaries";
 
 const ScreenBeneficiaries = () => {
   const [loading, setLoading] = useState(true);
@@ -10,16 +12,19 @@ const ScreenBeneficiaries = () => {
   const [copy, setCopy] = useState([]);
   const [view, setView] = useState([]);
   const [actualBranch, setActualBranch] = useState([]);
-  let allBeneficiaries
-  let manada 
-  let scout
-  let raider
-  let rover
-  let allBranch
+  const [allBranch, setallBranch] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [beneficieEdit, setBeneficieEdit] = useState({});
+  const [modeModal, setmodeModal] = useState("");
+  let allBeneficiaries;
+  let manada;
+  let scout;
+  let raider;
+  let rover;
 
   const fetchBeneficiaries = async () => {
     try {
-      const response = await axios.get("./beneficiaries.php");
+      const response = await axios.get("http://localhost/beneficiaries.php");
       const data = response.data;
       data.forEach((element) => {
         if (element.personal_file === "1") {
@@ -46,6 +51,7 @@ const ScreenBeneficiaries = () => {
     "Fic. Personal",
     "fic. Medica",
     "Rama",
+    "Editar",
   ];
 
   // Cada rama para renderizarlas
@@ -72,50 +78,71 @@ const ScreenBeneficiaries = () => {
     },
   ];
 
-  function createrFilter(){
-    allBeneficiaries = [...copy]
-    manada = copy.filter((x)=>x.branch === "manada")
-    scout = copy.filter((x)=>x.branch === "scout")
-    raider = copy.filter((x)=>x.branch === "raider")
-    rover = copy.filter((x)=>x.branch === "rover")
-    allBranch = [allBeneficiaries,manada,scout,raider,rover]
+  function createrFilter() {
+    allBeneficiaries = [...copy];
+    manada = copy.filter((x) => x.branch === "manada");
+    scout = copy.filter((x) => x.branch === "scout");
+    raider = copy.filter((x) => x.branch === "raider");
+    rover = copy.filter((x) => x.branch === "rover");
   }
 
-  function changeBranch(x){
-    setView(allBranch[x])
+  function changeBranch(x) {
+    setView(allBranch[x]);
+    setActualBranch(allBranch[x]);
   }
-
 
   useEffect(() => {
     fetchBeneficiaries();
   }, []);
 
   useEffect(() => {
-    setCopy(beneficiaries)
+    setCopy(beneficiaries);
   }, [beneficiaries]);
 
   useEffect(() => {
-    createrFilter()
-    setView(copy)
-    setActualBranch(allBeneficiaries)
+    createrFilter();
+    setallBranch([allBeneficiaries, manada, scout, raider, rover]);
+    setActualBranch(allBeneficiaries);
+    setView(copy);
   }, [copy]);
 
   if (loading) {
     return <div>Cargando...</div>;
   }
 
+  let beneficiarie = {
+    birth: '', 
+    branch: '',
+    medical_file: '',
+    name: '',
+    personal_file: '',
+    tel: '' 
+  }
+
+  const handleOpenModal = (x,y) => {
+    setModalOpen(true);
+    console.log(x);
+    setBeneficieEdit(x);
+    setmodeModal(y)
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
   return (
     <div className={style.screenBeneficiaries}>
       <div className={style.screenBeneficiariesContainer}>
         <h1>Beneficiarios</h1>
+        <button className={style.addBtn} onClick={()=>handleOpenModal(beneficiarie,"Añadir")}>Añadir</button>
         <div className={style.screenBeneficiariesBranchs}>
           {branchs.map((x) => (
             <span
               key={x.id}
               onClick={() => changeBranch(x.id)}
-              // className={`${style.branch} ${
-              //   actualBranch === x.id ? style.selectedBranch : ""
-              // }`}
+              className={`${style.branch} ${
+                actualBranch === allBranch[x.id] ? style.selectedBranch : ""
+              }`}
             >
               {x.category}
             </span>
@@ -135,20 +162,14 @@ const ScreenBeneficiaries = () => {
                 <p className={style.date}>{x.name}</p>
                 <p className={style.date}>{x.birth}</p>
                 <p className={style.date}>{x.tel}</p>
-                <p
-                  className={style.date}
-                  // onClick={() => changeFile(x.id, "personal_file")}
-                >
+                <p className={style.date}>
                   {x.personal_file ? (
                     <ImCheckboxChecked />
                   ) : (
                     <ImCheckboxUnchecked />
                   )}
                 </p>
-                <p
-                  className={style.date}
-                  // onClick={() => changeFile(x.id, "medical_file")}
-                >
+                <p className={style.date}>
                   {x.medical_file ? (
                     <ImCheckboxChecked />
                   ) : (
@@ -156,55 +177,25 @@ const ScreenBeneficiaries = () => {
                   )}
                 </p>
                 <p className={style.date}>{x.branch}</p>
+                <FiEdit3
+                  onClick={() => handleOpenModal(x,"Editar")}
+                  style={{ cursor: "pointer" }}
+                />
               </div>
             ))}
         </div>
       </div>
+      <ModalBeneficiaries
+        isOpen={modalOpen}
+        onClose={handleCloseModal}
+        contenido={beneficieEdit}
+        mode={modeModal}
+      >
+        <h2>Título del Modal</h2>
+        <p>Contenido del modal...</p>
+      </ModalBeneficiaries>
     </div>
   );
 };
 
 export default ScreenBeneficiaries;
-
-//   const beneficiaries = [
-//     {
-//   name: "Marcelo Benitez",
-//   birth: "2002-06-07",
-//   tel: "3415690470",
-//   personal_file: true,
-//   medical_file: false,
-//   branch: "rover",
-// },
-// {
-//     name: "Lucía López",
-//     birth: "1998-09-15",
-//     tel: "3456789012",
-//     personal_file: false,
-//     medical_file: true,
-//     branch: "manada",
-//   },
-//   {
-//       name: "Diego Martínez",
-//     birth: "1995-03-22",
-//     tel: "3501234567",
-//   personal_file: true,
-//   medical_file: true,
-//   branch: "scout",
-// },
-// {
-//   name: "Valentina Rodríguez",
-//   birth: "2000-11-10",
-//   tel: "3567890123",
-//   personal_file: false,
-//   medical_file: false,
-//   branch: "raider",
-// },
-// {
-//     name: "Sofía Fernández",
-//     birth: "1993-07-01",
-//     tel: "3590123456",
-//   personal_file: true,
-//   medical_file: true,
-//   branch: "rover",
-// },
-// ];

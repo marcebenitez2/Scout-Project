@@ -18,7 +18,7 @@ const LoginPage = () => {
     e.preventDefault();
   
     try {
-      const response = await axios.post("./login.php", {
+      const response = await axios.post("http://localhost/login.php", {
         username: username,
         password: password,
       });

@@ -1,7 +1,21 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+const react = require("@vitejs/plugin-react");
+const { defineConfig } = require("vite");
+const { createProxyMiddleware } = require("http-proxy-middleware");
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react()],
-})
+module.exports = defineConfig({
+  plugins: [
+    react(),
+  ],
+  server: {
+    proxy: {
+      "/login.php": {
+        target: "http://localhost", // Cambia la dirección a la ubicación de tu servidor Xampp
+        changeOrigin: true,
+        middleware: createProxyMiddleware({
+          target: "http://localhost",
+          changeOrigin: true,
+        }),
+      },
+    },
+  },
+});
