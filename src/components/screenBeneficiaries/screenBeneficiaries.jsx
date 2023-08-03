@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import style from "./screenBeneficiaries.module.css";
-import axios from "axios";
 import { ImCheckboxChecked } from "react-icons/im";
 import { ImCheckboxUnchecked } from "react-icons/im";
 import { FiEdit3 } from "react-icons/fi";
 import ModalBeneficiaries from "./Modal/modalBeneficiaries";
+import { fetchDataBase } from "../fetchDataBase";
+import { info, branchs } from "./arrays";
 
 const ScreenBeneficiaries = () => {
   const [loading, setLoading] = useState(true);
@@ -22,61 +23,23 @@ const ScreenBeneficiaries = () => {
   let raider;
   let rover;
 
-  const fetchBeneficiaries = async () => {
-    try {
-      const response = await axios.get("http://localhost/beneficiaries.php");
-      const data = response.data;
-      data.forEach((element) => {
-        if (element.personal_file === "1") {
-          element.personal_file = true;
-        } else element.personal_file = false;
+  fetchDataBase(
+    "http://localhost/beneficiaries.php",
+    setBeneficiaries,
+    setLoading
+  );
 
-        if (element.medical_file === "1") {
-          element.medical_file = true;
-        } else element.medical_file = false;
-      });
-      setBeneficiaries(data);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
-  };
+  function convertBool() {
+    beneficiaries.forEach((element) => {
+      if (element.personal_file === "1") {
+        element.personal_file = true;
+      } else element.personal_file = false;
 
-  // Cada categoria de la lista
-  const info = [
-    "Nombre",
-    "Nacimiento",
-    "telefono",
-    "Fic. Personal",
-    "fic. Medica",
-    "Rama",
-    "Editar",
-  ];
-
-  // Cada rama para renderizarlas
-  const branchs = [
-    {
-      id: 0,
-      category: "Todos",
-    },
-    {
-      id: 1,
-      category: "Manada",
-    },
-    {
-      id: 2,
-      category: "Scout",
-    },
-    {
-      id: 3,
-      category: "Raider",
-    },
-    {
-      id: 4,
-      category: "Rover",
-    },
-  ];
+      if (element.medical_file === "1") {
+        element.medical_file = true;
+      } else element.medical_file = false;
+    });
+  }
 
   function createrFilter() {
     allBeneficiaries = [...copy];
@@ -92,14 +55,12 @@ const ScreenBeneficiaries = () => {
   }
 
   useEffect(() => {
-    fetchBeneficiaries();
-  }, []);
-
-  useEffect(() => {
+    convertBool();
     setCopy(beneficiaries);
   }, [beneficiaries]);
 
   useEffect(() => {
+    console.log(copy);
     createrFilter();
     setallBranch([allBeneficiaries, manada, scout, raider, rover]);
     setActualBranch(allBeneficiaries);
@@ -111,32 +72,35 @@ const ScreenBeneficiaries = () => {
   }
 
   let beneficiarie = {
-    id:copy.length + 1,
-    birth: '', 
-    branch: '',
-    medical_file: '',
-    name: '',
-    personal_file: '',
-    tel: '',
-  }
+    id: copy.length + 1,
+    birth: "",
+    branch: "",
+    medical_file: "",
+    name: "",
+    personal_file: "",
+    tel: "",
+  };
 
-  const handleOpenModal = (x,y) => {
+  const handleOpenModal = (x, y) => {
     setModalOpen(true);
-    console.log(x);
     setBeneficieEdit(x);
-    setmodeModal(y)
+    setmodeModal(y);
   };
 
   const handleCloseModal = () => {
     setModalOpen(false);
   };
 
-
   return (
     <div className={style.screenBeneficiaries}>
       <div className={style.screenBeneficiariesContainer}>
         <h1>Beneficiarios</h1>
-        <button className={style.addBtn} onClick={()=>handleOpenModal(beneficiarie,"Añadir")}>Añadir</button>
+        <button
+          className={style.addBtn}
+          onClick={() => handleOpenModal(beneficiarie, "Añadir")}
+        >
+          Añadir
+        </button>
         <div className={style.screenBeneficiariesBranchs}>
           {branchs.map((x) => (
             <span
@@ -180,7 +144,7 @@ const ScreenBeneficiaries = () => {
                 </p>
                 <p className={style.date}>{x.branch}</p>
                 <FiEdit3
-                  onClick={() => handleOpenModal(x,"Editar")}
+                  onClick={() => handleOpenModal(x, "Editar")}
                   style={{ cursor: "pointer" }}
                 />
               </div>

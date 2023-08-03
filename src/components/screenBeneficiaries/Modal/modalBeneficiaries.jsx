@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import style from "./modalBeneficiaries.module.css";
 import { ImCheckboxChecked } from "react-icons/im";
 import { ImCheckboxUnchecked } from "react-icons/im";
+import postDataBase from "../../postDataBase";
 
 const ModalBeneficiaries = ({ isOpen, onClose, contenido, mode }) => {
   const [changeName, setChangeName] = useState();
@@ -13,6 +14,7 @@ const ModalBeneficiaries = ({ isOpen, onClose, contenido, mode }) => {
   const [id, setId] = useState("");
   const [change, setChange] = useState({});
 
+
   useEffect(() => {
     setChangeName(contenido.name);
     setChangeDate(contenido.birth);
@@ -20,25 +22,32 @@ const ModalBeneficiaries = ({ isOpen, onClose, contenido, mode }) => {
     setOptionsBranch(contenido.branch);
     setChangeMedical(contenido.medical_file);
     setChangePersonal(contenido.personal_file);
-    setId(contenido.id)
+    setId(contenido.id);
   }, [contenido]);
 
   function changeFile(x, y) {
     x(y);
   }
 
-  function saveChange(){
-    setChange(
-      {
-        id:id,
-        name:changeName,
-        birth:changeDate,
-        tel:changeTel,
-        branch:optionsBranch,
-        personal_file:changePersonal,
-        medical_file:changeMedical
-      }
-    )
+  useEffect(() => {
+    console.log(change)
+    if (Object.keys(change).length > 0) {
+      postDataBase(change, "http://localhost/saveChange.php");
+    }
+    onClose()
+  }, [change]);
+
+  function saveChange() {
+    setChange({
+      id: id,
+      name: changeName,
+      birth: changeDate,
+      tel: changeTel,
+      branch: optionsBranch,
+      personal_file: changePersonal ? 1 : 0,
+      medical_file: changeMedical ? 1 : 0,
+      mode: mode,
+    });
   }
 
   if (!isOpen) return null;
@@ -50,11 +59,13 @@ const ModalBeneficiaries = ({ isOpen, onClose, contenido, mode }) => {
         <div className={style.inputsContainer}>
           <div className={style.inputs}>
             <input
+              placeholder="Nombre"
               value={changeName || ""}
               className={style.editBeneficiarie}
               onChange={(e) => setChangeName(e.target.value)}
             />
             <input
+              placeholder="Telefono"
               value={changeTel || ""}
               className={style.editBeneficiarie}
               onChange={(e) => setChangeTel(e.target.value)}
@@ -62,11 +73,13 @@ const ModalBeneficiaries = ({ isOpen, onClose, contenido, mode }) => {
           </div>
           <div className={style.inputs}>
             <input
+              placeholder="Fecha de nacimiento"
               value={changeDate || ""}
               className={style.editBeneficiarie}
               onChange={(e) => setChangeDate(e.target.value)}
             />
             <select
+              placeholder="Rama"
               value={optionsBranch}
               className={style.editBeneficiarie}
               onChange={(e) => setOptionsBranch(e.target.value)}
@@ -112,7 +125,9 @@ const ModalBeneficiaries = ({ isOpen, onClose, contenido, mode }) => {
           <button className={style.modalCloseBtn} onClick={onClose}>
             Cancelar
           </button>
-          <button className={style.modalSaveBtn} onClick={()=>saveChange()}>Guardar</button>
+          <button className={style.modalSaveBtn} onClick={() => saveChange()}>
+            Guardar
+          </button>
         </div>
       </div>
     </div>

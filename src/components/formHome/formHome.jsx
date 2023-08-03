@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import style from "./formHome.module.css";
-import axios from "axios";
+import postDataBase from "./../postDataBase";
 
 const FormHome = () => {
   const [name, setName] = useState("");
@@ -8,25 +8,16 @@ const FormHome = () => {
   const [mail, setMail] = useState("");
   const [message, setMessage] = useState("");
 
-  const sendMessage = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    try {
-      const params = new URLSearchParams();
-      params.append("name", name);
-      params.append("tel", tel);
-      params.append("mail", mail);
-      params.append("message", message);
+    const params = new URLSearchParams();
+    params.append("name", name);
+    params.append("tel", tel);
+    params.append("mail", mail);
+    params.append("message", message);
 
-      const response = await axios.post("http://localhost/sendMessage.php", params, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      });
-
-    } catch (error) {
-      console.log(error);
-    }
+    postDataBase(params,"http://localhost/sendMessage.php");
   };
 
   return (
@@ -71,7 +62,7 @@ const FormHome = () => {
           className={style.formHomeInputText}
         />
       </div>
-      <button onClick={(e) => sendMessage(e)}>Enviar</button>
+      <button onClick={handleSubmit}>Enviar</button>
     </form>
   );
 };
