@@ -111,12 +111,13 @@ const ScreenBeneficiaries = () => {
   }
 
   let beneficiarie = {
+    id:copy.length + 1,
     birth: '', 
     branch: '',
     medical_file: '',
     name: '',
     personal_file: '',
-    tel: '' 
+    tel: '',
   }
 
   const handleOpenModal = (x,y) => {
@@ -129,6 +130,7 @@ const ScreenBeneficiaries = () => {
   const handleCloseModal = () => {
     setModalOpen(false);
   };
+
 
   return (
     <div className={style.screenBeneficiaries}>

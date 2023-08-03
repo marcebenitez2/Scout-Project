@@ -10,6 +10,8 @@ const ModalBeneficiaries = ({ isOpen, onClose, contenido, mode }) => {
   const [optionsBranch, setOptionsBranch] = useState("manada");
   const [changeMedical, setChangeMedical] = useState(false);
   const [changePersonal, setChangePersonal] = useState(false);
+  const [id, setId] = useState("");
+  const [change, setChange] = useState({});
 
   useEffect(() => {
     setChangeName(contenido.name);
@@ -18,10 +20,25 @@ const ModalBeneficiaries = ({ isOpen, onClose, contenido, mode }) => {
     setOptionsBranch(contenido.branch);
     setChangeMedical(contenido.medical_file);
     setChangePersonal(contenido.personal_file);
+    setId(contenido.id)
   }, [contenido]);
 
   function changeFile(x, y) {
     x(y);
+  }
+
+  function saveChange(){
+    setChange(
+      {
+        id:id,
+        name:changeName,
+        birth:changeDate,
+        tel:changeTel,
+        branch:optionsBranch,
+        personal_file:changePersonal,
+        medical_file:changeMedical
+      }
+    )
   }
 
   if (!isOpen) return null;
@@ -95,7 +112,7 @@ const ModalBeneficiaries = ({ isOpen, onClose, contenido, mode }) => {
           <button className={style.modalCloseBtn} onClick={onClose}>
             Cancelar
           </button>
-          <button className={style.modalSaveBtn}>Guardar</button>
+          <button className={style.modalSaveBtn} onClick={()=>saveChange()}>Guardar</button>
         </div>
       </div>
     </div>
