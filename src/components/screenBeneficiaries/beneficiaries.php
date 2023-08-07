@@ -25,7 +25,7 @@ if ($conn->connect_error) {
     die("error de conexión: " . $conn->connect_error);
 }
 
-$sql = "SELECT id, name, birth, tel, personal_file, medical_file, branch FROM beneficiaries";
+$sql = "SELECT id, name, birth, tel, personal_file, medical_file, branch, active FROM beneficiaries";
 
 $results = $conn->query($sql);
 

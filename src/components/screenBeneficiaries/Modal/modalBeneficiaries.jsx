@@ -3,6 +3,7 @@ import style from "./modalBeneficiaries.module.css";
 import { ImCheckboxChecked } from "react-icons/im";
 import { ImCheckboxUnchecked } from "react-icons/im";
 import postDataBase from "../../postDataBase";
+import { fetchDataBase } from "../../fetchDataBase";
 
 const ModalBeneficiaries = ({ isOpen, onClose, contenido, mode }) => {
   const [changeName, setChangeName] = useState();
@@ -11,9 +12,9 @@ const ModalBeneficiaries = ({ isOpen, onClose, contenido, mode }) => {
   const [optionsBranch, setOptionsBranch] = useState("manada");
   const [changeMedical, setChangeMedical] = useState(false);
   const [changePersonal, setChangePersonal] = useState(false);
+  const [changeActive, setChangeActive] = useState(false);
   const [id, setId] = useState("");
   const [change, setChange] = useState({});
-
 
   useEffect(() => {
     setChangeName(contenido.name);
@@ -22,19 +23,22 @@ const ModalBeneficiaries = ({ isOpen, onClose, contenido, mode }) => {
     setOptionsBranch(contenido.branch);
     setChangeMedical(contenido.medical_file);
     setChangePersonal(contenido.personal_file);
+    setChangeActive(contenido.active)
     setId(contenido.id);
   }, [contenido]);
 
-  function changeFile(x, y) {
-    x(y);
+  function changeBox(setter, actual) {
+    console.log("hola")
+    setter(!actual);
   }
 
   useEffect(() => {
-    console.log(change)
+    console.log(change);
     if (Object.keys(change).length > 0) {
       postDataBase(change, "http://localhost/saveChange.php");
     }
-    onClose()
+    onClose();
+
   }, [change]);
 
   function saveChange() {
@@ -46,7 +50,8 @@ const ModalBeneficiaries = ({ isOpen, onClose, contenido, mode }) => {
       branch: optionsBranch,
       personal_file: changePersonal ? 1 : 0,
       medical_file: changeMedical ? 1 : 0,
-      mode: mode,
+      active: changeActive ? 1 : 0,
+      mode: mode
     });
   }
 
@@ -96,12 +101,12 @@ const ModalBeneficiaries = ({ isOpen, onClose, contenido, mode }) => {
             <span>Ficha personal: </span>
             {changePersonal ? (
               <ImCheckboxChecked
-                onClick={() => changeFile(setChangePersonal, false)}
+                onClick={() => changeBox(setChangePersonal, changePersonal)}
                 style={{ cursor: "pointer" }}
               />
             ) : (
               <ImCheckboxUnchecked
-                onClick={() => changeFile(setChangePersonal, true)}
+                onClick={() => changeBox(setChangePersonal, changePersonal)}
                 style={{ cursor: "pointer" }}
               />
             )}
@@ -110,12 +115,26 @@ const ModalBeneficiaries = ({ isOpen, onClose, contenido, mode }) => {
             <span>Ficha medica: </span>
             {changeMedical ? (
               <ImCheckboxChecked
-                onClick={() => changeFile(setChangeMedical, false)}
+                onClick={() => changeBox(setChangeMedical, changeMedical)}
                 style={{ cursor: "pointer" }}
               />
             ) : (
               <ImCheckboxUnchecked
-                onClick={() => changeFile(setChangeMedical, true)}
+                onClick={() => changeBox(setChangeMedical, changeMedical)}
+                style={{ cursor: "pointer" }}
+              />
+            )}
+          </div>
+          <div>
+            <span>Activo: </span>
+            {changeActive ? (
+              <ImCheckboxChecked
+                onClick={() => changeBox(setChangeActive, changeActive)}
+                style={{ cursor: "pointer" }}
+              />
+            ) : (
+              <ImCheckboxUnchecked
+                onClick={() => changeBox(setChangeActive, changeActive)}
                 style={{ cursor: "pointer" }}
               />
             )}

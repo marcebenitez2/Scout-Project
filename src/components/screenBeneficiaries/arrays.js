@@ -5,6 +5,7 @@ export const info = [
   "Fic. Personal",
   "fic. Medica",
   "Rama",
+  "Activo",
   "Editar",
 ];
 

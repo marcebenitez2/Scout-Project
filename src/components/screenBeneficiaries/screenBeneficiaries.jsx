@@ -17,58 +17,68 @@ const ScreenBeneficiaries = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [beneficieEdit, setBeneficieEdit] = useState({});
   const [modeModal, setmodeModal] = useState("");
+  const [search, setSearch] = useState();
   let allBeneficiaries;
   let manada;
   let scout;
   let raider;
   let rover;
+  
+  useEffect(() => {
+    console.log(beneficiaries)
+    convertBool();
+    setCopy(beneficiaries);
+  }, [beneficiaries]);
+
+  useEffect(() => {
+    createrFilter();
+    setallBranch([allBeneficiaries, manada, scout, raider, rover]);
+    setActualBranch(allBeneficiaries);
+    setView(copy);
+  }, [copy]);
+  
+  useEffect(() => {
+    if (search !== "") {
+      setView(copy.filter((x) => x.name.toLowerCase().includes(search.toLowerCase())));
+      setActualBranch(allBranch[0])
+    } else {
+      setView(copy);
+    }
+  }, [search]);
 
   fetchDataBase(
     "http://localhost/beneficiaries.php",
     setBeneficiaries,
     setLoading
   );
-
+  
   function convertBool() {
     beneficiaries.forEach((element) => {
       if (element.personal_file === "1") {
         element.personal_file = true;
       } else element.personal_file = false;
-
+      
       if (element.medical_file === "1") {
         element.medical_file = true;
       } else element.medical_file = false;
-    });
-  }
 
-  function createrFilter() {
-    allBeneficiaries = [...copy];
-    manada = copy.filter((x) => x.branch === "manada");
-    scout = copy.filter((x) => x.branch === "scout");
-    raider = copy.filter((x) => x.branch === "raider");
-    rover = copy.filter((x) => x.branch === "rover");
+      if (element.active === "1") {
+        element.active = true;
+      } else element.active = false;
+    });
   }
 
   function changeBranch(x) {
     setView(allBranch[x]);
     setActualBranch(allBranch[x]);
   }
-
-  useEffect(() => {
-    convertBool();
-    setCopy(beneficiaries);
-  }, [beneficiaries]);
-
-  useEffect(() => {
-    console.log(copy);
-    createrFilter();
-    setallBranch([allBeneficiaries, manada, scout, raider, rover]);
-    setActualBranch(allBeneficiaries);
-    setView(copy);
-  }, [copy]);
-
-  if (loading) {
-    return <div>Cargando...</div>;
+   
+  function createrFilter() {
+    allBeneficiaries = [...copy];
+    manada = copy.filter((x) => x.branch === "manada");
+    scout = copy.filter((x) => x.branch === "scout");
+    raider = copy.filter((x) => x.branch === "raider");
+    rover = copy.filter((x) => x.branch === "rover");
   }
 
   let beneficiarie = {
@@ -80,7 +90,7 @@ const ScreenBeneficiaries = () => {
     personal_file: "",
     tel: "",
   };
-
+  
   const handleOpenModal = (x, y) => {
     setModalOpen(true);
     setBeneficieEdit(x);
@@ -91,6 +101,10 @@ const ScreenBeneficiaries = () => {
     setModalOpen(false);
   };
 
+  if (loading) {
+    return <div>Cargando...</div>;
+  }
+  
   return (
     <div className={style.screenBeneficiaries}>
       <div className={style.screenBeneficiariesContainer}>
@@ -114,6 +128,7 @@ const ScreenBeneficiaries = () => {
             </span>
           ))}
         </div>
+        <input placeholder="Nombre" className={style.search} onChange={(e)=>setSearch(e.target.value)}/>
         <div className={style.screenBeneficiariesList}>
           <div className={style.infos}>
             {info.map((x) => (
@@ -143,13 +158,22 @@ const ScreenBeneficiaries = () => {
                   )}
                 </p>
                 <p className={style.date}>{x.branch}</p>
+                <p className={style.date}>
+                  {x.active ? (
+                    <ImCheckboxChecked />
+                  ) : (
+                    <ImCheckboxUnchecked />
+                  )}
+                </p>
                 <FiEdit3
                   onClick={() => handleOpenModal(x, "Editar")}
                   style={{ cursor: "pointer" }}
+                  className={style.date}
                 />
               </div>
             ))}
         </div>
+       <span style={{fontSize:'19px',fontWeight:'500',marginTop:'1rem'}}><span style={{color:'#1472ff'}}>RECUERDA: </span>los cambios se veran luego de recargar la pagina</span>
       </div>
       <ModalBeneficiaries
         isOpen={modalOpen}
