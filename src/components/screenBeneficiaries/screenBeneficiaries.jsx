@@ -23,9 +23,9 @@ const ScreenBeneficiaries = () => {
   let scout;
   let raider;
   let rover;
-  
+
   useEffect(() => {
-    console.log(beneficiaries)
+    console.log(beneficiaries);
     convertBool();
     setCopy(beneficiaries);
   }, [beneficiaries]);
@@ -36,11 +36,13 @@ const ScreenBeneficiaries = () => {
     setActualBranch(allBeneficiaries);
     setView(copy);
   }, [copy]);
-  
+
   useEffect(() => {
     if (search !== "") {
-      setView(copy.filter((x) => x.name.toLowerCase().includes(search.toLowerCase())));
-      setActualBranch(allBranch[0])
+      setView(
+        copy.filter((x) => x.name.toLowerCase().includes(search.toLowerCase()))
+      );
+      setActualBranch(allBranch[0]);
     } else {
       setView(copy);
     }
@@ -51,13 +53,13 @@ const ScreenBeneficiaries = () => {
     setBeneficiaries,
     setLoading
   );
-  
+
   function convertBool() {
     beneficiaries.forEach((element) => {
       if (element.personal_file === "1") {
         element.personal_file = true;
       } else element.personal_file = false;
-      
+
       if (element.medical_file === "1") {
         element.medical_file = true;
       } else element.medical_file = false;
@@ -72,7 +74,7 @@ const ScreenBeneficiaries = () => {
     setView(allBranch[x]);
     setActualBranch(allBranch[x]);
   }
-   
+
   function createrFilter() {
     allBeneficiaries = [...copy];
     manada = copy.filter((x) => x.branch === "manada");
@@ -90,7 +92,7 @@ const ScreenBeneficiaries = () => {
     personal_file: "",
     tel: "",
   };
-  
+
   const handleOpenModal = (x, y) => {
     setModalOpen(true);
     setBeneficieEdit(x);
@@ -104,7 +106,7 @@ const ScreenBeneficiaries = () => {
   if (loading) {
     return <div>Cargando...</div>;
   }
-  
+
   return (
     <div className={style.screenBeneficiaries}>
       <div className={style.screenBeneficiariesContainer}>
@@ -128,7 +130,11 @@ const ScreenBeneficiaries = () => {
             </span>
           ))}
         </div>
-        <input placeholder="Nombre" className={style.search} onChange={(e)=>setSearch(e.target.value)}/>
+        <input
+          placeholder="Nombre"
+          className={style.search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
         <div className={style.screenBeneficiariesList}>
           <div className={style.infos}>
             {info.map((x) => (
@@ -143,37 +149,38 @@ const ScreenBeneficiaries = () => {
                 <p className={style.date}>{x.name}</p>
                 <p className={style.date}>{x.birth}</p>
                 <p className={style.date}>{x.tel}</p>
-                <p className={style.date}>
+                <p className={style.date} style={{textAlign:'center'}}>
                   {x.personal_file ? (
                     <ImCheckboxChecked />
                   ) : (
                     <ImCheckboxUnchecked />
                   )}
                 </p>
-                <p className={style.date}>
+                <p className={style.date} style={{textAlign:'center'}}>
                   {x.medical_file ? (
                     <ImCheckboxChecked />
                   ) : (
                     <ImCheckboxUnchecked />
                   )}
                 </p>
-                <p className={style.date}>{x.branch}</p>
-                <p className={style.date}>
-                  {x.active ? (
-                    <ImCheckboxChecked />
-                  ) : (
-                    <ImCheckboxUnchecked />
-                  )}
+                <p className={style.date} style={{textAlign:'center'}}>{x.branch}</p>
+                <p className={style.date} style={{textAlign:'center'}}>
+                  {x.active ? <ImCheckboxChecked /> : <ImCheckboxUnchecked />}
                 </p>
                 <FiEdit3
                   onClick={() => handleOpenModal(x, "Editar")}
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer", fontSize: "20px" }}
                   className={style.date}
                 />
               </div>
             ))}
         </div>
-       <span style={{fontSize:'19px',fontWeight:'500',marginTop:'1rem'}}><span style={{color:'#1472ff'}}>RECUERDA: </span>los cambios se veran luego de recargar la pagina</span>
+        <span
+          style={{ fontSize: "19px", fontWeight: "500", marginTop: "1rem" }}
+        >
+          <span style={{ color: "#1472ff",fontWeight: "900" }}>IMPORTANTE: </span>los cambios se
+          veran luego de recargar la pagina
+        </span>
       </div>
       <ModalBeneficiaries
         isOpen={modalOpen}

@@ -25,7 +25,7 @@ if($conn -> connect_error){
     die("error de conexion: " . $conn -> connect_error);
 }
 
-$sql = "SELECT id, COUNT(*) AS notification_count, name, tel, mail, message,date FROM notifications GROUP BY id, name, tel, mail, message, date";
+$sql = "SELECT id, COUNT(*) AS notification_count, name, tel, mail, message,date,active FROM notifications GROUP BY id, name, tel, mail, message, date, active";
 
 $result = $conn -> query($sql);
 
