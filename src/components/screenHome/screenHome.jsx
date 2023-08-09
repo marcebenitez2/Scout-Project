@@ -1,37 +1,35 @@
 import React, { useContext, useEffect, useState } from "react";
 import style from "./screenHome.module.css";
-import axios from "axios";
 import UserContext from "../../userContext";
 import { BsFillDiamondFill } from "react-icons/bs";
 import { TiDeleteOutline } from "react-icons/ti";
+import { fetchDataBase } from "../fetchDataBase";
 
 const ScreenHome = () => {
-  const [loading, setLoading] = useState(true);
-  const [notifications, setNotifications] = useState([]);
-  
   const { user } = useContext(UserContext);
 
-  const fetchNotifications = async () => {
-    try {
-      const response = await axios.get("http://localhost/notification.php");
-      const data = response.data;
-      setNotifications(data);
-      setLoading(false); // Los datos se han cargado, establecemos loading en false
-     
-    } catch (error) {
-      console.log(error);
-      setLoading(false); // Hubo un error, establecemos loading en false
-    }
-  };
+  const [loading, setLoading] = useState(true);
+  const [notifications, setNotifications] = useState([]);
+  const [activeNotificactions, setActiveNotificactions] = useState([]);
+  const [inactiveNotifications, setInactiveNotifications] = useState([]);
+
+
+  fetchDataBase(
+    "http://localhost/notification.php",
+    setNotifications,
+    setLoading
+  );
 
   useEffect(() => {
-    fetchNotifications();
-  }, []);
+    setActiveNotificactions(notifications.filter((x) => x.active === "1"));
+    setInactiveNotifications(notifications.filter((x) => x.active === "0"));
+    console.log(notifications)
+  }, [notifications]);
 
-  const deleteNotification = (id) =>{
-    const updateNotificactions = notifications.filter((x)=> x.id !== id)
-    setNotifications(updateNotificactions)
-  }
+  const deleteNotification = (id) => {
+    const updateNotificactions = notifications.filter((x) => x.id !== id);
+    setNotifications(updateNotificactions);
+  };
 
   return (
     <div className={style.screenHome}>
@@ -43,34 +41,71 @@ const ScreenHome = () => {
           <p>Cargando...</p>
         ) : (
           <div className={style.screenHomeNotificationContainer}>
-            <p>Tiene {notifications.length} mensajes pendientes...</p>
-            <div className={style.screenHomeNotification}>
-              {notifications.map((x) => (
-                <div key={x.id} className={style.notificationCard}>
-                  <div>
-                    <div className={style.notificationCardName}>
-                      <BsFillDiamondFill color="yellow" />
-                      <span>{x.name}</span>
-                      <TiDeleteOutline
-                        color="red"
-                        style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                        onClick={()=>deleteNotification(x.id)}
-                      />
-                    </div>
-                    <p className={style.notificationCardMessage}>{x.message}</p>
-                  </div>
-
-                  <div className={style.notificationCardDates}>
+            <div>
+              <p>Tienes {activeNotificactions.length} mensajes nuevos...</p>
+              <div className={style.screenHomeNotification}>
+                {activeNotificactions.map((x) => (
+                  <div key={x.id} className={style.notificationCard}>
                     <div>
-                      <p>tel: {x.tel}</p>
-                      <p>{x.mail}</p>
+                      <div className={style.notificationCardName}>
+                        <BsFillDiamondFill color="yellow" />
+                        <span>{x.name}</span>
+                        <TiDeleteOutline
+                          color="red"
+                          style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                          onClick={() => deleteNotification(x.id)}
+                        />
+                      </div>
+                      <p className={style.notificationCardMessage}>
+                        {x.message}
+                      </p>
                     </div>
-                    <span style={{ fontWeight: "bold", fontSize: "14px" }}>
-                      {x.date.slice(5)}
-                    </span>
+
+                    <div className={style.notificationCardDates}>
+                      <div>
+                        <p>tel: {x.tel}</p>
+                        <p>{x.mail}</p>
+                      </div>
+                      <span style={{ fontWeight: "bold", fontSize: "14px" }}>
+                        {x.date.slice(5)}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+            </div>
+            <div>
+              <p>Mensajes vistos...</p>
+              <div className={style.screenHomeNotification}>
+              {inactiveNotifications.map((x) => (
+                  <div key={x.id} className={style.notificationCard}>
+                    <div>
+                      <div className={style.notificationCardName}>
+                        <BsFillDiamondFill color="yellow" />
+                        <span>{x.name}</span>
+                        <TiDeleteOutline
+                          color="red"
+                          style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                          onClick={() => deleteNotification(x.id)}
+                        />
+                      </div>
+                      <p className={style.notificationCardMessage}>
+                        {x.message}
+                      </p>
+                    </div>
+
+                    <div className={style.notificationCardDates}>
+                      <div>
+                        <p>tel: {x.tel}</p>
+                        <p>{x.mail}</p>
+                      </div>
+                      <span style={{ fontWeight: "bold", fontSize: "14px" }}>
+                        {x.date.slice(5)}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )}

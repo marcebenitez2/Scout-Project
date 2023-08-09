@@ -176,7 +176,7 @@ const ScreenBeneficiaries = () => {
             ))}
         </div>
         <span
-          style={{ fontSize: "19px", fontWeight: "500", marginTop: "1rem" }}
+          style={{ fontSize: "19px", fontWeight: "500", marginTop: "1rem",textAlign:'center' }}
         >
           <span style={{ color: "#1472ff",fontWeight: "900" }}>IMPORTANTE: </span>los cambios se
           veran luego de recargar la pagina

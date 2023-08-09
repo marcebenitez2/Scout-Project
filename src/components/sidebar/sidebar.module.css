@@ -9,8 +9,8 @@
 }
 
 .sidebarLogo {
-  width: 6rem;
-  height: 6rem;
+  width: 5rem;
+  height: 5rem;
   transform: translate(20px,20px);
 }
 
@@ -70,12 +70,16 @@
     background-color: #1c243d;
     border-radius: 10px;
     width: 50vw;
+    z-index: 100;
     /* padding: 30px; */
   }
 
   .sidebarMenu {
     display: block;
     font-size: 3rem;
+  }
+  .sidebarLogo{
+    transform: none;
   }
 }
 
