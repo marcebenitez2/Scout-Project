@@ -9,7 +9,7 @@ const ModalBeneficiaries = ({ isOpen, onClose, contenido, mode }) => {
   const [changeName, setChangeName] = useState();
   const [changeDate, setChangeDate] = useState();
   const [changeTel, setChangeTel] = useState();
-  const [optionsBranch, setOptionsBranch] = useState("manada");
+  const [optionsBranch, setOptionsBranch] = useState("");
   const [changeMedical, setChangeMedical] = useState(false);
   const [changePersonal, setChangePersonal] = useState(false);
   const [changeActive, setChangeActive] = useState(false);
@@ -68,12 +68,14 @@ const ModalBeneficiaries = ({ isOpen, onClose, contenido, mode }) => {
               value={changeName || ""}
               className={style.editBeneficiarie}
               onChange={(e) => setChangeName(e.target.value)}
+              type="text"
             />
             <input
               placeholder="Telefono"
               value={changeTel || ""}
               className={style.editBeneficiarie}
               onChange={(e) => setChangeTel(e.target.value)}
+              type="number"
             />
           </div>
           <div className={style.inputs}>
@@ -82,6 +84,7 @@ const ModalBeneficiaries = ({ isOpen, onClose, contenido, mode }) => {
               value={changeDate || ""}
               className={style.editBeneficiarie}
               onChange={(e) => setChangeDate(e.target.value)}
+              type="date"
             />
             <select
               placeholder="Rama"
