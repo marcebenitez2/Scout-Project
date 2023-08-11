@@ -26,3 +26,14 @@ body{
   font-family: 'Lato', sans-serif;
   color: white;
 }
+
+/* Cambiar el color de la barra de desplazamiento */
+/* Webkit (Chrome, Safari, Opera) */
+::-webkit-scrollbar {
+  width: 10px; /* Ancho de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #69b4ff; /* Color del pulgar de la barra de desplazamiento */
+  border-radius: 5px; /* Radio de los bordes del pulgar */
+}

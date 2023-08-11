@@ -4,15 +4,16 @@ import UserContext from "../../userContext";
 import { BsFillDiamondFill } from "react-icons/bs";
 import { TiDeleteOutline } from "react-icons/ti";
 import { fetchDataBase } from "../fetchDataBase";
+import ModalConfirm from "../confirmModal/modalConfirm";
 
 const ScreenHome = () => {
   const { user } = useContext(UserContext);
-
   const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState([]);
   const [activeNotificactions, setActiveNotificactions] = useState([]);
   const [inactiveNotifications, setInactiveNotifications] = useState([]);
-
+  const [modalOpen, setmodalOpen] = useState(false);
+  const [xToConfirm, setxToConfirm] = useState({});
 
   fetchDataBase(
     "http://localhost/notification.php",
@@ -24,11 +25,14 @@ const ScreenHome = () => {
     setActiveNotificactions(notifications.filter((x) => x.active === "1"));
     setInactiveNotifications(notifications.filter((x) => x.active === "0"));
     console.log(notifications)
-  }, [notifications]);
+  }, [notifications,modalOpen]);
 
-  const deleteNotification = (id) => {
-    const updateNotificactions = notifications.filter((x) => x.id !== id);
-    setNotifications(updateNotificactions);
+  const handleOpenModal = (x) => {
+    setmodalOpen(true)
+    setxToConfirm(x)
+  };
+  const handleCloseModal = () => {
+    setmodalOpen(false);
   };
 
   return (
@@ -53,7 +57,7 @@ const ScreenHome = () => {
                         <TiDeleteOutline
                           color="red"
                           style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                          onClick={() => deleteNotification(x.id)}
+                          onClick={() => handleOpenModal(x)}
                         />
                       </div>
                       <p className={style.notificationCardMessage}>
@@ -86,7 +90,7 @@ const ScreenHome = () => {
                         <TiDeleteOutline
                           color="red"
                           style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                          onClick={() => deleteNotification(x.id)}
+                          onClick={() => handleOpenModal(x)}
                         />
                       </div>
                       <p className={style.notificationCardMessage}>
@@ -110,6 +114,11 @@ const ScreenHome = () => {
           </div>
         )}
       </div>
+      <ModalConfirm
+      isOpen={modalOpen}
+      onClose={handleCloseModal}
+      toConfirm={xToConfirm}>
+      </ModalConfirm>
     </div>
   );
 };

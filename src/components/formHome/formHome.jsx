@@ -27,7 +27,7 @@ const FormHome = () => {
           <p>Nombre</p>
           <input
             type="text"
-            placeholder="Example: Roman Berrutti"
+            placeholder="Ejemplo: Roman Berrutti"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -36,7 +36,7 @@ const FormHome = () => {
           <p>Telefono</p>
           <input
             type="tel"
-            placeholder="Example: 3415690470"
+            placeholder="Ejemplo: 3415690470"
             value={tel}
             onChange={(e) => setTel(e.target.value)}
           />
@@ -47,7 +47,7 @@ const FormHome = () => {
         <p>Mail</p>
         <input
           type="email"
-          placeholder="Example: roman@gmail.com"
+          placeholder="Ejemplo: roman@gmail.com"
           value={mail}
           onChange={(e) => setMail(e.target.value)}
         />
@@ -56,7 +56,7 @@ const FormHome = () => {
         <p>Mensaje</p>
         <input
           type="text"
-          placeholder="Hi, i need information whit...."
+          placeholder="Hola, necesito informacion sobre..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           className={style.formHomeInputText}

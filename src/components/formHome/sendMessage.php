@@ -1,12 +1,7 @@
 <?php
 
-
 header("Access-Control-Allow-Origin: *");
-
-// Permitir los métodos que se utilizan en la solicitud (por ejemplo, POST)
 header("Access-Control-Allow-Methods: POST");
-
-// Permitir los encabezados específicos que se utilizan en la solicitud
 header("Access-Control-Allow-Headers: Content-Type");
 
 $servername = "localhost";
@@ -24,8 +19,9 @@ $tel = isset($_POST['tel']) ? $conn->real_escape_string($_POST['tel']) : "";
 $mail = isset($_POST['mail']) ? $conn->real_escape_string($_POST['mail']) : "";
 $message = isset($_POST['message']) ? $conn->real_escape_string($_POST['message']) : "";
 
+
 // Prepara la consulta SQL utilizando una sentencia preparada
-$sql = "INSERT INTO notifications (name, tel, mail, message) VALUES (?, ?, ?, ?)";
+$sql = "INSERT INTO notifications (name, tel, mail, message,active) VALUES (?, ?, ?, ?, 1)";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("ssss", $name, $tel, $mail, $message);
 
