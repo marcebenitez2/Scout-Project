@@ -40,7 +40,7 @@ p{
     font-size: x-large;
 }
 
-button{
+.btnSubmit{
     height: 3rem;
     background-color: #0085ff;
     border: none;

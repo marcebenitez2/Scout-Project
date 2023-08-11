@@ -62,7 +62,7 @@ const FormHome = () => {
           className={style.formHomeInputText}
         />
       </div>
-      <button onClick={handleSubmit}>Enviar</button>
+      <button className={style.btnSubmit} onClick={handleSubmit}>Enviar</button>
     </form>
   );
 };
