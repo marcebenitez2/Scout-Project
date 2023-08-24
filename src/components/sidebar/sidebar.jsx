@@ -27,7 +27,7 @@ const Sidebar = () => {
       id: 0
     },
     {
-      icon: <BsPeopleFill className={style.sidebarIcon} />,
+      icon: <BsPeopleFill className={style.sidebarIcon}/>,
       text: "Beneficiarios",
       id: 1,
     },

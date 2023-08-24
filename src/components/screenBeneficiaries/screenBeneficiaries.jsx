@@ -187,10 +187,7 @@ const ScreenBeneficiaries = () => {
         onClose={handleCloseModal}
         contenido={beneficieEdit}
         mode={modeModal}
-      >
-        <h2>Título del Modal</h2>
-        <p>Contenido del modal...</p>
-      </ModalBeneficiaries>
+      />
     </div>
   );
 };

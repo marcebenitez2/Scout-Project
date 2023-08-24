@@ -81,6 +81,8 @@
   right: 10vw;
   cursor: pointer;
   z-index: 0;
+  background-color: #1472ff;
+  border: none;
 }
 
 .search{
