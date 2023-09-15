@@ -12,8 +12,6 @@ const LoginPage = () => {
 
   const {setIdUser , setUser, setRole  } = useContext(UserContext);
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
   
